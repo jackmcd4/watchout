@@ -21,6 +21,7 @@ var gameBoard = d3.select('.gameboard')
                   // .append('svg')
                   .attr("width", gameOptions.width)
                   .attr("height", gameOptions.height)
+                  .style('border', '10px solid black')
 
 
 var svg = d3.select('.gameboard').append('svg')
@@ -43,15 +44,18 @@ var userSvg = d3.select('svg').append('svg');
 var startPos = userSvg.attr("height", gameOptions.height)
                .attr("width", gameOptions.width)
 
+//give this guy class, and use userClass on mouseover later
 var userCircle = startPos.selectAll('circle')
                    .data(userArr)
                    .enter()
                    .append('circle')
 
+
 var userStyle =   userCircle.attr("cx", 350)
                   .attr("cy", 250)
                   .attr("r", 10)
                   .style("fill", "red");
+
 
 
 
@@ -64,7 +68,7 @@ var makeCallback = function(){
     .attr("cy", yvar)
     .duration(2000)
     // .delay();
-    d3.select('.current').append('span').html(d3.time.seconds*10);
+    d3.select('.current').html("Current Score: " + (Date.parse(d3.select('document').created)));
     d3.timer(makeCallback(),interval);
 
     return true;
