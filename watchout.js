@@ -21,13 +21,13 @@ var gameBoard = d3.select('.gameboard')
                   // .append('svg')
                   .attr("width", gameOptions.width)
                   .attr("height", gameOptions.height)
+                  .style('border', '10px solid black')
 
 
 var svg = d3.select('.gameboard').append('svg')
-            .style('border', '10px solid black')
 var position = svg.attr("height", gameOptions.height)
                   .attr("width", gameOptions.width);
-var circles = position.selectAll('image')
+var circles =     position.selectAll('image')
                     .data(dataArray)
                     .enter()
                     .append('svg:image')
@@ -42,6 +42,7 @@ var circleStyle = circles
                      .attr({"width": '15%', "height": '15%'})
                      .attr("class",'gorillaz')
                      // .style("fill", "blue")
+
 var userSvg = d3.select('svg').append('svg');
 var startPos = userSvg.attr("height", gameOptions.height)
                .attr("width", gameOptions.width)
@@ -111,6 +112,7 @@ setInterval(stopWatch, 100);
     //constantly find x, y coordinates and check for collision
       //with da bannananananana
 var hits = 0;
+var HS = 0;
 // var collisions = function(){
 //   // if(d3.touches(d3.selectAll('.gorillaz').node(), d3.selectAll('.mouse').node())){
 //     // d3.select('.current').html("Current Score: " + 0);
@@ -124,23 +126,34 @@ var hits = 0;
 // };
 
 // setInterval(collisions, 100);
-var gor = d3.selectAll('.gorillaz');
-var collisionLogic = function(){
-  debugger;
-  for(var i = 0; i < gor.length; i++){
-  var enemyX = +(gor[i].attr("x"))
-  var enemyY = +(gor[i].attr("y"))
-  var userX = +(d3.selectAll('.mouse').attr("x"))
-  var userY = +(d3.selectAll('.mouse').attr("y"))
-    if(((userX+35>enemyX) && (userX+35<enemyX+105)) && ((userY+25>enemyY) && (userY+25<enemyY+75))){
-      debugger;
-    }
-  }
-} // bind gor into function somehow
-setInterval(collisionLogic, 100);
-d3.selectAll('.gorillaz');
+//var gor = c.selectAll('.gorillaz').data(dataArray)  ;
+var prev = false;
 
-d3.selectAll('image.gorillaz');
+var collisionLogic = function(){
+ circles.each(function(){
+    var collide = this;
+    var enemyX = (this.x.animVal.value)
+    var enemyY = (this.y.animVal.value)
+    var userX = +(d3.selectAll(".mouse").attr("x"))
+    var userY = +(d3.selectAll(".mouse").attr("y"))
+
+    if(((userX+35>enemyX) && (userX+35<enemyX+105)) && ((userY+25>enemyY) && (userY+25<enemyY+75))){
+      if(timeCounter > HS){
+        HS = timeCounter
+        d3.select(".high").html("High Score: " + HS);
+        timeCounter = 0;
+      }
+        d3.select(".current").html("Current Score: " + 0)
+        if(prev != collide){
+          hits++
+          d3.select(".collisions").html("Collisions: " + hits)
+        }
+
+        prev = collide;
+    }
+  })
+} // bind gor into function somehow
+d3.timer(collisionLogic, 100);
 d3.timer(makeCallback(),interval);
 
 
