@@ -27,19 +27,20 @@ var svg = d3.select('.gameboard').append('svg')
             .style('border', '10px solid black')
 var position = svg.attr("height", gameOptions.height)
                   .attr("width", gameOptions.width);
-var circles = position.selectAll('circle')
+var circles = position.selectAll('image')
                     .data(dataArray)
                     .enter()
-                    .append('circle')
+                    .append('svg:image')
 
 // debugger;
 var circleStyle = circles
                      // .attr("r", 12)
-                     .attr("cx", xvar)
-                     .attr("cy", yvar)
-                     .attr("r", 12)
-                     .style("fill", "blue");
-
+                     .attr("x", xvar)
+                     .attr("y", yvar)
+                     // .attr("r", 12)
+                     .attr("xlink:href", "gorilla.png" )
+                     .attr({"width": '15%', "height": '15%'})
+                     // .style("fill", "blue")
 var userSvg = d3.select('svg').append('svg');
 var startPos = userSvg.attr("height", gameOptions.height)
                .attr("width", gameOptions.width)
@@ -51,11 +52,13 @@ var userCircle = startPos.selectAll('circle')
                    .append('circle')
 
 
-var userStyle =   userCircle.attr("cx", 350)
-                  .attr("cy", 250)
+var userStyle =   userCircle.attr("x", 350)
+                  .attr("y", 250)
                   .attr("r", 10)
-                  .style("fill", "red")
-                  .attr("class",'mouse');
+                  .attr("xlink:href", "banana.png")
+                  .attr({"width":"25%", "height":"25%"})
+                  // .style("fill", "red")
+                  .attr("class",'mouse')
 
 gameBoard.on('mousemove', function(){
   var loc = d3.mouse(this);
@@ -63,7 +66,7 @@ gameBoard.on('mousemove', function(){
   var x = mouse.x;
   var y = mouse.y;
 
-  d3.select('.mouse').attr({cy:y, cx:x});
+  d3.select('.mouse').attr({y:y, x:x});
 })
 
 
@@ -72,8 +75,8 @@ var interval = 2000;
 var makeCallback = function(){
   return function(){
     circles.transition()
-    .attr("cx", xvar)
-    .attr("cy", yvar)
+    .attr("x", xvar)
+    .attr("y", yvar)
     .duration(2000)
     // .delay();
     d3.timer(makeCallback(),interval);
