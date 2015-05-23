@@ -21,10 +21,10 @@ var gameBoard = d3.select('.gameboard')
                   // .append('svg')
                   .attr("width", gameOptions.width)
                   .attr("height", gameOptions.height)
-                  .style('border', '10px solid black')
 
 
 var svg = d3.select('.gameboard').append('svg')
+            .style('border', '10px solid black')
 var position = svg.attr("height", gameOptions.height)
                   .attr("width", gameOptions.width);
 var circles = position.selectAll('circle')
@@ -54,9 +54,17 @@ var userCircle = startPos.selectAll('circle')
 var userStyle =   userCircle.attr("cx", 350)
                   .attr("cy", 250)
                   .attr("r", 10)
-                  .style("fill", "red");
+                  .style("fill", "red")
+                  .attr("class",'mouse');
 
+gameBoard.on('mousemove', function(){
+  var loc = d3.mouse(this);
+  mouse =  {x:loc[0], y:loc[1]};
+  var x = mouse.x;
+  var y = mouse.y;
 
+  d3.select('.mouse').attr({cy:y, cx:x});
+})
 
 
 //$('start').on("click", function(){
@@ -68,12 +76,26 @@ var makeCallback = function(){
     .attr("cy", yvar)
     .duration(2000)
     // .delay();
-    d3.select('.current').html("Current Score: " + (Date.parse(d3.select('document').created)));
     d3.timer(makeCallback(),interval);
 
     return true;
   }
 };
+var timeCounter = 0;
+var stopWatch = function(){
+  var time = new Date().getMilliseconds();
+  timeCounter+=(Math.floor(time/50));
+  d3.select('.current').html("Current Score: " +timeCounter);
+
+};
+
+setInterval(stopWatch, 100)
+
+
+
+
+
+
 d3.timer(makeCallback(),interval);
 
 
