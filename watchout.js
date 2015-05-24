@@ -21,10 +21,10 @@ var gameBoard = d3.select('.gameboard')
                   // .append('svg')
                   .attr("width", gameOptions.width)
                   .attr("height", gameOptions.height)
-                  .style('border', '10px solid black')
 
 
 var svg = d3.select('.gameboard').append('svg')
+                  .style('border', '10px solid black')
 var position = svg.attr("height", gameOptions.height)
                   .attr("width", gameOptions.width);
 var circles =     position.selectAll('image')
@@ -127,31 +127,35 @@ var HS = 0;
 
 // setInterval(collisions, 100);
 //var gor = c.selectAll('.gorillaz').data(dataArray)  ;
-var prev = false;
-
+var impact = false;
 var collisionLogic = function(){
+    var collide = false;
  circles.each(function(){
-    var collide = this;
+    //console.log(collide)
     var enemyX = (this.x.animVal.value)
     var enemyY = (this.y.animVal.value)
     var userX = +(d3.selectAll(".mouse").attr("x"))
     var userY = +(d3.selectAll(".mouse").attr("y"))
-
     if(((userX+35>enemyX) && (userX+35<enemyX+105)) && ((userY+25>enemyY) && (userY+25<enemyY+75))){
+      collide = true;
       if(timeCounter > HS){
         HS = timeCounter
         d3.select(".high").html("High Score: " + HS);
         timeCounter = 0;
-      }
         d3.select(".current").html("Current Score: " + 0)
-        if(prev != collide){
+      }
+        if(collide !== impact){
           hits++
           d3.select(".collisions").html("Collisions: " + hits)
+          timeCounter = 0;
+          d3.select(".current").html("Current Score: " + 0)
         }
-
-        prev = collide;
     }
   })
+      impact = collide;
+    // if(((userX+35<enemyX) || (userX+35>enemyX+105)) || ((userY+25<enemyY) || (userY+25>enemyY+75))){
+    //   collided = false;
+    // }
 } // bind gor into function somehow
 d3.timer(collisionLogic, 100);
 d3.timer(makeCallback(),interval);
