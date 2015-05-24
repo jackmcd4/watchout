@@ -23,6 +23,8 @@ var gameBoard = d3.select('.gameboard')
                   .attr("height", gameOptions.height)
 
 
+
+
 var svg = d3.select('.gameboard').append('svg')
                   .style('border', '10px solid black')
 var position = svg.attr("height", gameOptions.height)
